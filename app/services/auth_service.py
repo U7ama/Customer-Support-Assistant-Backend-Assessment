@@ -39,11 +39,12 @@ class AuthService:
         
         # Create new user
         hashed_password = get_password_hash(user_data.password)
-        user_in_db = UserCreate(
-            email=user_data.email,
-            password=hashed_password
-        )
-        user = user_repository.create(db, obj_in=user_in_db)
+        # Fix: Use a dictionary with the correct field names that match the User model
+        user_data_dict = {
+            "email": user_data.email,
+            "hashed_password": hashed_password
+        }
+        user = user_repository.create(db, obj_in=user_data_dict)
         return user
     
     @staticmethod

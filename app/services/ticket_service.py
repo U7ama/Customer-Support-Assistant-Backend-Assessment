@@ -16,10 +16,11 @@ class TicketService:
         current_user: UUID
     ) -> Ticket:
         """Create a new support ticket"""
+        # Extract data from TicketCreate
         ticket_data = ticket_in.dict()
-        ticket_data["user_id"] = current_user
         
-        return ticket_repository.create(db, obj_in=TicketCreate(**ticket_data))
+        # Create the ticket using the repository (pass user_id directly)
+        return ticket_repository.create(db, obj_in={**ticket_data, "user_id": current_user})
     
     @staticmethod
     async def get_user_tickets(
